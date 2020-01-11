@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using MeshSplitting.Splitables;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,12 +18,22 @@ public class FloorErector : MonoBehaviour
     public SideErector West;
     public GameObject Ground;
 
+    public Transform SplitTransform;
+
     public List<MeshFilter> Meshes;
+    public Floor FloorPrefab;
 
-
-    public void BuildFloor(float width, float depth)
+    void Awake()
     {
         Meshes = new List<MeshFilter>();
+    }
+
+
+    public Floor BuildFloor(float width, float depth)
+    {
+        DestroyOld();
+
+        Meshes.Clear();
         Width = width;
         Depth = depth;
 
@@ -31,21 +42,58 @@ public class FloorErector : MonoBehaviour
         East = BuildSide(Vector3.right * width, true);
         West = BuildSide(Vector3.zero, true);
 
-        Meshes.AddRange(South.GetComponentsInChildren<MeshFilter>());
-        Meshes.AddRange(North.GetComponentsInChildren<MeshFilter>());
-        Meshes.AddRange(East.GetComponentsInChildren<MeshFilter>());
-        Meshes.AddRange(West.GetComponentsInChildren<MeshFilter>());
+        Meshes.AddRange(South.MeshFilters);
+        Meshes.AddRange(North.MeshFilters);
+        Meshes.AddRange(East.MeshFilters);
+        Meshes.AddRange(West.MeshFilters);
 
-        BuildGround();
+        Meshes.Add(BuildGround());
+
+        return SpawnFloor();
     }
 
-    private void BuildGround()
+    private void DestroyOld()
+    {
+        for (int i = transform.childCount; i > 0; --i)
+        {
+            Destroy(transform.GetChild(0).gameObject);
+        }
+    }
+
+    private Floor SpawnFloor()
+    {
+        var floor = Instantiate(FloorPrefab, transform.position, transform.rotation);
+        var combinedMesh = new Mesh();
+        combinedMesh.CombineMeshes(CombineMeshes(Meshes));
+        floor.MeshFilter.mesh = combinedMesh;
+
+        return floor;
+    }
+
+    private CombineInstance[] CombineMeshes(List<MeshFilter> meshes)
+    {
+        CombineInstance[] combine = new CombineInstance[meshes.Count];
+
+        int i = 0;
+        while (i < meshes.Count)
+        {
+            combine[i].mesh = meshes[i].sharedMesh;
+            combine[i].transform = meshes[i].transform.localToWorldMatrix;
+            meshes[i].gameObject.SetActive(false);
+
+            i++;
+        }
+
+        return combine;
+    }
+
+    private MeshFilter BuildGround()
     {
         Ground = Instantiate(GroundPrefab, new Vector3(Width * 0.5f, 0f, Depth * 0.5f), Quaternion.Euler(90f,0f,0f));
         Ground.transform.localScale = new Vector3(Width,Depth);
         Ground.transform.parent = transform;
 
-        Meshes.Add(Ground.GetComponent<MeshFilter>());
+        return Ground.GetComponent<MeshFilter>();
     }
 
     private SideErector BuildSide(Vector3 position, bool rotated)
@@ -55,6 +103,12 @@ public class FloorErector : MonoBehaviour
         if(rotated) side.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
         side.transform.parent = transform;
         return side;
+    }
+
+    public void SplitFloor(Vector3 splitPlaneOrigin, Vector3 splitPlaneRotation)
+    {
+        SplitTransform.position = splitPlaneOrigin;
+        SplitTransform.rotation = Quaternion.Euler(splitPlaneRotation);
     }
 }
 
@@ -69,12 +123,18 @@ public class FloorErectorEditor : Editor
         if (GUILayout.Button("Build Floor"))
         {
 
-            for (int i = t.transform.childCount; i > 0; --i)
+            for (int i = t.transform.childCount; i > 1; --i)
             {
-                DestroyImmediate(t.transform.GetChild(0).gameObject);
+                DestroyImmediate(t.transform.GetChild(1).gameObject);
             }
 
             t.BuildFloor(t.Width, t.Depth);
+        }
+
+        if (GUILayout.Button("Split Floor"))
+        {
+
+            t.SplitFloor(t.SplitTransform.position, t.SplitTransform.rotation.eulerAngles);
         }
     }
 }

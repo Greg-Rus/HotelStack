@@ -9,50 +9,28 @@ public class FloorSpawner : MonoBehaviour
     public float StartingSideLength;
     public Vector2 FloorDimensions;
     public float MovementSpeed;
-    public FloorErector CurrentFloor;
+    public Floor CurrentFloor;
     public int HotelHeight = 0;
     public float FloorSpawnOffset;
     public Vector3 FloorOrigin = Vector3.zero;
     public float SnapZoneSize;
     public Vector3 Destination;
 
-    public MeshFilter CombinedMesh;
-
     public Vector3 CurrentDirection = Vector3.left;
 
     void Start()
     {
         FloorDimensions = new Vector2(StartingSideLength, StartingSideLength);
-        CombinedMesh.mesh = new Mesh();
         SpawnFloor();
     }
 
     private void SpawnFloor()
     {
-        CurrentFloor = Instantiate(FloorPrefab, Vector3.zero, Quaternion.identity);
-        CurrentFloor.BuildFloor(FloorDimensions.x, FloorDimensions.y);
+        //CurrentFloor = Instantiate(FloorPrefab, Vector3.zero, Quaternion.identity);
+        FloorPrefab.BuildFloor(FloorDimensions.x, FloorDimensions.y);
         CurrentFloor.transform.position = FloorOrigin + (CurrentDirection * FloorSpawnOffset * -1);
         Destination = FloorOrigin + CurrentDirection * FloorSpawnOffset;
 
-        CombineMeshes();
-    }
-
-    private void CombineMeshes()
-    {
-        CombineInstance[] combine = new CombineInstance[CurrentFloor.Meshes.Count];
-
-        int i = 0;
-        while (i < CurrentFloor.Meshes.Count)
-        {
-            combine[i].mesh = CurrentFloor.Meshes[i].sharedMesh;
-            combine[i].transform = CurrentFloor.Meshes[i].transform.localToWorldMatrix;
-            CurrentFloor.Meshes[i].gameObject.SetActive(false);
-
-            i++;
-        }
-
-        CombinedMesh.mesh = new Mesh();
-        transform.GetComponent<MeshFilter>().mesh.CombineMeshes(combine);
     }
 
     void Update()

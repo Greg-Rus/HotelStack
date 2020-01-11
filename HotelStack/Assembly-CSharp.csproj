@@ -62,9 +62,28 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Floor.cs" />
     <Compile Include="Assets\FloorBuilder.cs" />
     <Compile Include="Assets\FloorErector.cs" />
     <Compile Include="Assets\FloorSpawner.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\Demo\Scripts\DemoController.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\Demo\Scripts\DestroyLimitY.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\Demo\Scripts\MouseMotor.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\Demo\Scripts\RigidMotor.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\Examples\CameraLineSplitter.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\Examples\MobileLineSplitter.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\MeshTools\IMeshSplitter.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\MeshTools\MeshContainer.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\MeshTools\MeshSplitterConcave.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\MeshTools\MeshSplitterConvex.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\Splitables\ISplitable.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\Splitables\SimpleSplitable.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\Splitables\Splitable.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\SplitterMath\Plane.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\SplitterMath\SplitterMath.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\Splitters\SimpleSplitter.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\Splitters\Splitter.cs" />
+    <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\Splitters\SplitterSingleCut.cs" />
     <Compile Include="Assets\PackageAssets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\AbstractResizer.cs" />
     <Compile Include="Assets\Scripts\FloorSideBuilder.cs" />
@@ -75,6 +94,8 @@
     <Compile Include="Assets\Scripts\WindowHalfResizer.cs" />
     <Compile Include="Assets\Scripts\WindowResizer.cs" />
     <Compile Include="Assets\SideErector.cs" />
+    <None Include="Assets\FoxGames Mesh Split\Demo\Shaders\DebugNormal.shader" />
+    <None Include="Assets\FoxGames Mesh Split\Demo\Shaders\ColorOverlay.shader" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>K:/Kata/HotelStack/HotelStack/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
