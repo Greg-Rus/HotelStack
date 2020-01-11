@@ -17,9 +17,12 @@ public class FloorErector : MonoBehaviour
     public SideErector West;
     public GameObject Ground;
 
+    public List<MeshFilter> Meshes;
+
 
     public void BuildFloor(float width, float depth)
     {
+        Meshes = new List<MeshFilter>();
         Width = width;
         Depth = depth;
 
@@ -27,6 +30,11 @@ public class FloorErector : MonoBehaviour
         North = BuildSide(Vector3.forward * depth, false);
         East = BuildSide(Vector3.right * width, true);
         West = BuildSide(Vector3.zero, true);
+
+        Meshes.AddRange(South.GetComponentsInChildren<MeshFilter>());
+        Meshes.AddRange(North.GetComponentsInChildren<MeshFilter>());
+        Meshes.AddRange(East.GetComponentsInChildren<MeshFilter>());
+        Meshes.AddRange(West.GetComponentsInChildren<MeshFilter>());
 
         BuildGround();
     }
@@ -36,6 +44,8 @@ public class FloorErector : MonoBehaviour
         Ground = Instantiate(GroundPrefab, new Vector3(Width * 0.5f, 0f, Depth * 0.5f), Quaternion.Euler(90f,0f,0f));
         Ground.transform.localScale = new Vector3(Width,Depth);
         Ground.transform.parent = transform;
+
+        Meshes.Add(Ground.GetComponent<MeshFilter>());
     }
 
     private SideErector BuildSide(Vector3 position, bool rotated)

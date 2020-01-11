@@ -16,11 +16,14 @@ public class FloorSpawner : MonoBehaviour
     public float SnapZoneSize;
     public Vector3 Destination;
 
+    public MeshFilter CombinedMesh;
+
     public Vector3 CurrentDirection = Vector3.left;
 
     void Start()
     {
         FloorDimensions = new Vector2(StartingSideLength, StartingSideLength);
+        CombinedMesh.mesh = new Mesh();
         SpawnFloor();
     }
 
@@ -30,22 +33,47 @@ public class FloorSpawner : MonoBehaviour
         CurrentFloor.BuildFloor(FloorDimensions.x, FloorDimensions.y);
         CurrentFloor.transform.position = FloorOrigin + (CurrentDirection * FloorSpawnOffset * -1);
         Destination = FloorOrigin + CurrentDirection * FloorSpawnOffset;
+
+        CombineMeshes();
+    }
+
+    private void CombineMeshes()
+    {
+        CombineInstance[] combine = new CombineInstance[CurrentFloor.Meshes.Count];
+
+        int i = 0;
+        while (i < CurrentFloor.Meshes.Count)
+        {
+            combine[i].mesh = CurrentFloor.Meshes[i].sharedMesh;
+            combine[i].transform = CurrentFloor.Meshes[i].transform.localToWorldMatrix;
+            CurrentFloor.Meshes[i].gameObject.SetActive(false);
+
+            i++;
+        }
+
+        CombinedMesh.mesh = new Mesh();
+        transform.GetComponent<MeshFilter>().mesh.CombineMeshes(combine);
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    OnFloorDrop();
+        //}
+        //else
+        //{
+        //    MoveCurrentFloor();
+        //}
+    }
+
+    private void MoveCurrentFloor()
+    {
+        CurrentFloor.transform.Translate(CurrentDirection * Time.smoothDeltaTime * MovementSpeed);
+        var distanceFromOrigin = (FloorOrigin - CurrentFloor.transform.position).magnitude;
+        if (distanceFromOrigin >= FloorSpawnOffset)
         {
-            OnFloorDrop();
-        }
-        else
-        {
-            CurrentFloor.transform.Translate(CurrentDirection * Time.smoothDeltaTime * MovementSpeed);
-            var distanceFromOrigin = (FloorOrigin - CurrentFloor.transform.position).magnitude;
-            if (distanceFromOrigin >= FloorSpawnOffset)
-            {
-                CurrentDirection *= -1;
-            }
+            CurrentDirection *= -1;
         }
     }
 
