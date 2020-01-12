@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class SideErector : MonoBehaviour
 {
     public MeshFilter Wall;
     public MeshFilter Window;
-    public float Width;
+    public float Length;
 
     private List<MeshFilter> _meshFilters;
 
@@ -24,6 +25,7 @@ public class SideErector : MonoBehaviour
     public void MakeSide(float width)
     {
         MeshFilters.Clear();
+        DestroyOld();
 
         if (width <= 1)
         {
@@ -31,6 +33,7 @@ public class SideErector : MonoBehaviour
             obj.transform.localScale = new Vector3(width, 1f, 1f);
             obj.transform.parent = this.transform;
             obj.transform.localPosition = Vector3.zero;
+            obj.transform.rotation = transform.rotation;
             MeshFilters.Add(obj);
         }
 
@@ -58,12 +61,28 @@ public class SideErector : MonoBehaviour
         }
     }
 
+    private void DestroyOld() //Replace with object pooling
+    {
+#if UNITY_EDITOR
+        for (int i = transform.childCount; i > 0; --i)
+        {
+            DestroyImmediate(transform.GetChild(0).gameObject);
+        }
+#else
+                for (int i = transform.childCount; i > 0; --i)
+        {
+            Destroy(transform.GetChild(0).gameObject);
+        }
+#endif
+    }
+
     private MeshFilter SpawnObject(MeshFilter go, float position, float scale)
     {
         var obj = Instantiate(go);
         obj.transform.parent = this.transform;
         obj.transform.localPosition = Vector3.right * position;
         obj.transform.localScale = new Vector3(scale, 1f, 1f);
+        obj.transform.rotation = transform.rotation;
 
         return obj;
     }
@@ -72,20 +91,13 @@ public class SideErector : MonoBehaviour
 [CustomEditor(typeof(SideErector))]
 public class SideErectorEditor : Editor
 {
-    [SerializeField] public float Width;
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
         var t = (SideErector)target;
         if (GUILayout.Button("Build Object"))
         {
-
-            for (int i = t.transform.childCount; i > 0; --i)
-            {
-                DestroyImmediate(t.transform.GetChild(0).gameObject);
-            }
-
-            t.MakeSide(t.Width);
+            t.MakeSide(t.Length);
         }
     }
 }

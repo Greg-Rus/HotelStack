@@ -45,4 +45,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Wall: {fileID: 8334053786039146240, guid: e2d48b26d560e3d44920795c01c974bb, type: 3}
   Window: {fileID: 4454650021272249778, guid: d5c36121a914d994993fe41e57af99d0, type: 3}
-  Width: 0.5
+  Length: 0
