@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using MeshSplitting.Splitables;
-using UnityEditor;
 using UnityEngine;
 
 [ExecuteInEditMode]
 public class FloorErector : MonoBehaviour
 {
-    //public SideErector SidePrefab;
-    //public GameObject GroundPrefab;
-
     public float Width;
     public float Depth;
 
@@ -92,7 +88,6 @@ public class FloorErector : MonoBehaviour
 
     private MeshFilter BuildGround()
     {
-        //Ground = Instantiate(GroundPrefab, new Vector3(Width * 0.5f, 0f, Depth * 0.5f), Quaternion.Euler(90f,0f,0f));
         Ground.transform.position = new Vector3(Width * 0.5f, 0f, Depth * 0.5f);
         Ground.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
         Ground.transform.localScale = new Vector3(Width,Depth);
@@ -101,45 +96,9 @@ public class FloorErector : MonoBehaviour
         return Ground.GetComponent<MeshFilter>();
     }
 
-    //private SideErector BuildSide(Vector3 position, bool rotated)
-    //{
-    //    //var side = Instantiate(SidePrefab, position, Quaternion.identity);
-    //    //side.MakeSide(rotated ? Depth : Width);
-    //    //if(rotated) side.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
-    //    //side.transform.parent = transform;
-    //    //return side;
-    //}
-
     public void SplitFloor(Vector3 splitPlaneOrigin, Vector3 splitPlaneRotation)
     {
         SplitTransform.position = splitPlaneOrigin;
         SplitTransform.rotation = Quaternion.Euler(splitPlaneRotation);
-    }
-}
-
-[CustomEditor(typeof(FloorErector))]
-public class FloorErectorEditor : Editor
-{
-    [SerializeField] public float Width;
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
-        var t = (FloorErector)target;
-        if (GUILayout.Button("Build Floor"))
-        {
-
-            //for (int i = t.transform.childCount; i > 1; --i)
-            //{
-            //    DestroyImmediate(t.transform.GetChild(1).gameObject);
-            //}
-
-            t.BuildFloor(t.Width, t.Depth);
-        }
-
-        if (GUILayout.Button("Split Floor"))
-        {
-
-            t.SplitFloor(t.SplitTransform.position, t.SplitTransform.rotation.eulerAngles);
-        }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -85,19 +83,5 @@ public class SideErector : MonoBehaviour
         obj.transform.rotation = transform.rotation;
 
         return obj;
-    }
-}
-
-[CustomEditor(typeof(SideErector))]
-public class SideErectorEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
-        var t = (SideErector)target;
-        if (GUILayout.Button("Build Object"))
-        {
-            t.MakeSide(t.Length);
-        }
     }
 }

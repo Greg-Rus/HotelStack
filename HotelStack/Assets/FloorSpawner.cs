@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using MeshSplitting.Splitables;
 using MeshSplitting.Splitters;
 using UnityEngine;
-using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 
 public class FloorSpawner : MonoBehaviour

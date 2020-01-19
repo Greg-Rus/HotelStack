@@ -1,5 +1,4 @@
 using MeshSplitting.Splitables;
-using UnityEditor;
 using UnityEngine;
 
 namespace MeshSplitting.Splitters

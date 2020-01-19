@@ -7,7 +7,6 @@ public class WallHalfResizer : MonoBehaviour
     [SerializeField] private MeshFilter _wallMeshFilter;
     [SerializeField] private float _baseWallWidth;
     [SerializeField] private float _baseThickness;
-    // Start is called before the first frame update
 
     void OnValidate()
     {

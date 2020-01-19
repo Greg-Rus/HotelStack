@@ -63,6 +63,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\PackageAssets\TutorialInfo\Scripts\Editor\ReadmeEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\FloorBuilderEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\FloorErectorEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\FloorSideBuilderEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\SideErectorEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\SimpleSplitterEditor.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>K:/Kata/HotelStack/HotelStack/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
