@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using MeshSplitting.Splitables;
+using MeshSplitting.Splitters;
 using UnityEngine;
+using UnityEngine.Analytics;
+using UnityEngine.SceneManagement;
 
 public class FloorSpawner : MonoBehaviour
 {
-    public FloorErector FloorPrefab;
+    public FloorErector FloorErector;
     public float StartingSideLength;
     public Vector2 FloorDimensions;
     public float MovementSpeed;
@@ -18,6 +22,10 @@ public class FloorSpawner : MonoBehaviour
 
     public Vector3 CurrentDirection = Vector3.left;
 
+    public SimpleSplitter Splitter;
+    public Camera MainCamera;
+    public Vector3 CameraOffset;
+
     void Start()
     {
         FloorDimensions = new Vector2(StartingSideLength, StartingSideLength);
@@ -26,11 +34,11 @@ public class FloorSpawner : MonoBehaviour
 
     private void SpawnFloor()
     {
-        //CurrentFloor = Instantiate(FloorPrefab, Vector3.zero, Quaternion.identity);
-        CurrentFloor = FloorPrefab.BuildFloor(FloorDimensions.x, FloorDimensions.y);
+        CurrentFloor = FloorErector.BuildFloor(FloorDimensions.x, FloorDimensions.y);
         CurrentFloor.transform.position = FloorOrigin + (CurrentDirection * FloorSpawnOffset * -1);
         Destination = FloorOrigin + CurrentDirection * FloorSpawnOffset;
 
+        UpdateCameraPosition();
     }
 
     void Update()
@@ -63,15 +71,50 @@ public class FloorSpawner : MonoBehaviour
         if (overhang.magnitude < SnapZoneSize) SnapToOrigin();
         else SnipFloor(overhang);
 
-        HotelHeight++;
-        FloorOrigin += Vector3.up * 2; 
+        if (FloorDimensions.x <= 0 || FloorDimensions.y <= 0)
+        {
+            EndGame();
+        }
+        else
+        {
+            HotelHeight++;
+            FloorOrigin += Vector3.up * 2;
+            SpawnNewFloor();
+        }
 
-        SpawnNewFloor();
+    }
+
+    private void EndGame()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    private void UpdateCameraPosition()
+    {
+        MainCamera.transform.position = FloorOrigin + CameraOffset;
     }
 
     private void SnipFloor(Vector3 overhang)
     {
-        if(overhang.x > 0 || overhang.z > 0) FloorOrigin = CurrentFloor.transform.position;
+        if (overhang.x < 0 || overhang.z < 0)
+        {
+            Splitter.transform.position = FloorOrigin;
+        }
+        else
+        {
+            var splitterPosition = FloorOrigin + new Vector3(FloorDimensions.x, 0f, FloorDimensions.y);
+            Splitter.transform.position = splitterPosition;
+        }
+
+        if (overhang.x > 0) Splitter.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 90f));
+        else if (overhang.x < 0) Splitter.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, -90f));
+        else if (overhang.z > 0) Splitter.transform.rotation = Quaternion.Euler(new Vector3(-90, 0f, 0f));
+        else if (overhang.z < 0) Splitter.transform.rotation = Quaternion.Euler(new Vector3(90, 0f, 0f));
+
+        Splitter.Floor = CurrentFloor.Splitable;
+        Splitter.SplitObject();
+
+        if (overhang.x > 0 || overhang.z > 0) FloorOrigin = CurrentFloor.transform.position;
         FloorDimensions.x -= Math.Abs(overhang.x);
         FloorDimensions.y -= Math.Abs(overhang.z);
     }

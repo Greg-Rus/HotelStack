@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2727823049660936945}
   - component: {fileID: 2727823049660936944}
   m_Layer: 0
-  m_Name: Floor
+  m_Name: FloorErector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,37 +56,8 @@ MonoBehaviour:
   West: {fileID: 4720461220279962375}
   Ground: {fileID: 7164846233437068863}
   SplitTransform: {fileID: 0}
-  Meshes:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 9171264962761021158}
-  FloorPrefab: {fileID: 3570354867969951295, guid: d19fda4ea8f51d041926563c23abd8db,
+  Meshes: []
+  FloorPrefab: {fileID: 8873487876315412066, guid: d19fda4ea8f51d041926563c23abd8db,
     type: 3}
 --- !u!1001 &1356917913137651821
 PrefabInstance:
@@ -360,12 +331,6 @@ GameObject:
 --- !u!4 &1454071683867509162 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2432624106923625802, guid: 2626bb9f3c85dc14eb00e2d891ed30a2,
-    type: 3}
-  m_PrefabInstance: {fileID: 3886479770574949600}
-  m_PrefabAsset: {fileID: 0}
---- !u!33 &9171264962761021158 stripped
-MeshFilter:
-  m_CorrespondingSourceObject: {fileID: 5379950144119101958, guid: 2626bb9f3c85dc14eb00e2d891ed30a2,
     type: 3}
   m_PrefabInstance: {fileID: 3886479770574949600}
   m_PrefabAsset: {fileID: 0}

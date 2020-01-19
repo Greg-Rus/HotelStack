@@ -41,11 +41,6 @@ public class FloorErector : MonoBehaviour
         Width = width;
         Depth = depth;
 
-        //South = BuildSide(Vector3.zero, false);
-        //North = BuildSide(Vector3.forward * depth, false);
-        //East = BuildSide(Vector3.right * width, true);
-        //West = BuildSide(Vector3.zero, true);
-
         South.transform.localPosition = Vector3.zero;
         South.MakeSide(width);
 

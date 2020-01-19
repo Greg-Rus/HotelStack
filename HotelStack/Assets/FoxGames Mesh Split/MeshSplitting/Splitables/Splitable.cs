@@ -5,8 +5,6 @@ using UnityEngine;
 
 namespace MeshSplitting.Splitables
 {
-
-
     [AddComponentMenu("Mesh Splitting/Splitable")]
     public class Splitable : MonoBehaviour, ISplitable
     {
@@ -36,6 +34,11 @@ namespace MeshSplitting.Splitables
 
         private bool _isSplitting = false;
         private bool _splitMesh = false;
+
+        protected PlaneMath SplitPlane
+        {
+            get { return _splitPlane; }
+        }
 
         private void Awake()
         {
@@ -103,9 +106,9 @@ namespace MeshSplitting.Splitables
                     _meshContainerStatic[i] = new MeshContainer(meshFilters[i]);
 
                     _meshSplitterStatic[i] = Convex
-                        ? (IMeshSplitter) new MeshSplitterConvex(_meshContainerStatic[i], _splitPlane,
+                        ? (IMeshSplitter) new MeshSplitterConvex(_meshContainerStatic[i], SplitPlane,
                             splitTransform.rotation)
-                        : (IMeshSplitter) new MeshSplitterConcave(_meshContainerStatic[i], _splitPlane,
+                        : (IMeshSplitter) new MeshSplitterConcave(_meshContainerStatic[i], SplitPlane,
                             splitTransform.rotation);
 
                     if (UseCapUV) _meshSplitterStatic[i].SetCapUV(UseCapUV, CustomUV, CapUVMin, CapUVMax);
@@ -122,9 +125,9 @@ namespace MeshSplitting.Splitables
                     _meshContainerSkinned[i] = new MeshContainer(skinnedRenderes[i]);
 
                     _meshSplitterSkinned[i] = Convex
-                        ? (IMeshSplitter) new MeshSplitterConvex(_meshContainerSkinned[i], _splitPlane,
+                        ? (IMeshSplitter) new MeshSplitterConvex(_meshContainerSkinned[i], SplitPlane,
                             splitTransform.rotation)
-                        : (IMeshSplitter) new MeshSplitterConcave(_meshContainerSkinned[i], _splitPlane,
+                        : (IMeshSplitter) new MeshSplitterConcave(_meshContainerSkinned[i], SplitPlane,
                             splitTransform.rotation);
 
                     if (UseCapUV) _meshSplitterSkinned[i].SetCapUV(UseCapUV, CustomUV, CapUVMin, CapUVMax);
@@ -222,13 +225,15 @@ namespace MeshSplitting.Splitables
                         newBody.velocity = ownBody.velocity;
                         newBody.angularVelocity = ownBody.angularVelocity;
                         if (SplitForce > 0f)
-                            newBody.AddForce(_splitPlane.Normal * newMass * (i == 0 ? SplitForce : -SplitForce),
+                            newBody.AddForce(SplitPlane.Normal * newMass * (i == 0 ? SplitForce : -SplitForce),
                                 ForceMode.Impulse);
                     }
                 }
 
                 PostProcessObject(newGOs[i]);
             }
+            PostProcessTopObject(newGOs[0]);
+            PostProcessBottomObject(newGOs[1]);
         }
 
         private void UpdateMeshesInChildren(int i, GameObject go)
@@ -375,6 +380,14 @@ namespace MeshSplitting.Splitables
         }
 
         protected virtual void PostProcessObject(GameObject go)
+        {
+        }
+
+        protected virtual void PostProcessTopObject(GameObject go)
+        {
+        }
+
+        protected virtual void PostProcessBottomObject(GameObject go)
         {
         }
     }
