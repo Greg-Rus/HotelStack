@@ -27,7 +27,7 @@ public class FloorSpawner : MonoBehaviour
     private void SpawnFloor()
     {
         //CurrentFloor = Instantiate(FloorPrefab, Vector3.zero, Quaternion.identity);
-        FloorPrefab.BuildFloor(FloorDimensions.x, FloorDimensions.y);
+        CurrentFloor = FloorPrefab.BuildFloor(FloorDimensions.x, FloorDimensions.y);
         CurrentFloor.transform.position = FloorOrigin + (CurrentDirection * FloorSpawnOffset * -1);
         Destination = FloorOrigin + CurrentDirection * FloorSpawnOffset;
 
@@ -35,14 +35,14 @@ public class FloorSpawner : MonoBehaviour
 
     void Update()
     {
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    OnFloorDrop();
-        //}
-        //else
-        //{
-        //    MoveCurrentFloor();
-        //}
+        if (Input.GetMouseButtonDown(0))
+        {
+            OnFloorDrop();
+        }
+        else
+        {
+            MoveCurrentFloor();
+        }
     }
 
     private void MoveCurrentFloor()
@@ -71,8 +71,9 @@ public class FloorSpawner : MonoBehaviour
 
     private void SnipFloor(Vector3 overhang)
     {
-        if(overhang.x > 0) FloorOrigin = CurrentFloor.transform.position;
+        if(overhang.x > 0 || overhang.z > 0) FloorOrigin = CurrentFloor.transform.position;
         FloorDimensions.x -= Math.Abs(overhang.x);
+        FloorDimensions.y -= Math.Abs(overhang.z);
     }
 
     private void SpawnNewFloor()
