@@ -88,6 +88,7 @@
     <Compile Include="Assets\PackageAssets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\AbstractResizer.cs" />
     <Compile Include="Assets\Scripts\FloorSideBuilder.cs" />
+    <Compile Include="Assets\Scripts\Helpers.cs" />
     <Compile Include="Assets\Scripts\IResizableSegment.cs" />
     <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
     <Compile Include="Assets\Scripts\WallHalfResizer.cs" />
