@@ -9,6 +9,7 @@ public class FloorErector : MonoBehaviour
 {
     public float Width;
     public float Depth;
+    public float GroundThickness;
 
     public SideErector South;
     public SideErector North;
@@ -88,9 +89,8 @@ public class FloorErector : MonoBehaviour
 
     private MeshFilter BuildGround()
     {
-        Ground.transform.position = new Vector3(Width * 0.5f, 0f, Depth * 0.5f);
-        Ground.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
-        Ground.transform.localScale = new Vector3(Width,Depth);
+        Ground.transform.position = new Vector3(Width * 0.5f, GroundThickness * 0.5f, Depth * 0.5f);
+        Ground.transform.localScale = new Vector3(Width, GroundThickness, Depth);
         Ground.transform.parent = transform;
 
         return Ground.GetComponent<MeshFilter>();

@@ -22,6 +22,13 @@ public class FloorSpawner : MonoBehaviour
     public Camera MainCamera;
     public Vector3 CameraOffset;
 
+    public static FloorSpawner Instance { get; private set; }
+
+    void Awake()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
         FloorDimensions = new Vector2(StartingSideLength, StartingSideLength);
@@ -77,7 +84,6 @@ public class FloorSpawner : MonoBehaviour
             FloorOrigin += Vector3.up * 2;
             SpawnNewFloor();
         }
-
     }
 
     private void EndGame()

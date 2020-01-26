@@ -329,6 +329,7 @@ Assets\FloorSpawner.cs
 "Assets\FoxGames Mesh Split\MeshSplitting\Splitters\SplitterSingleCut.cs"
 Assets\PackageAssets\TutorialInfo\Scripts\Readme.cs
 Assets\Scripts\AbstractResizer.cs
+Assets\Scripts\FloorDecorator.cs
 Assets\Scripts\FloorSideBuilder.cs
 Assets\Scripts\Helpers.cs
 Assets\Scripts\IResizableSegment.cs

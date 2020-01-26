@@ -31,6 +31,7 @@ namespace MeshSplitting.Splitables
         private IMeshSplitter[] _meshSplitterStatic;
         private MeshContainer[] _meshContainerSkinned;
         private IMeshSplitter[] _meshSplitterSkinned;
+        private Bounds[] _meshBounds;
 
         private bool _isSplitting = false;
         private bool _splitMesh = false;
@@ -100,6 +101,7 @@ namespace MeshSplitting.Splitables
 
                 _meshContainerStatic = new MeshContainer[meshFilters.Length];
                 _meshSplitterStatic = new IMeshSplitter[meshFilters.Length];
+                _meshBounds = new Bounds[2];
 
                 for (int i = 0; i < meshFilters.Length; i++)
                 {
@@ -217,6 +219,7 @@ namespace MeshSplitting.Splitables
                     if (ownBody != null && newBody != null)
                     {
                         Vector3 newMeshSize = newMesh.bounds.size;
+                        _meshBounds[i] = newMesh.bounds;
                         float meshVolume = newMeshSize.x * newMeshSize.y * newMeshSize.z;
                         float newMass = ownMass * (meshVolume / ownVolume);
 
@@ -232,8 +235,8 @@ namespace MeshSplitting.Splitables
 
                 PostProcessObject(newGOs[i]);
             }
-            PostProcessTopObject(newGOs[0]);
-            PostProcessBottomObject(newGOs[1]);
+            PostProcessTopObject(newGOs[0], _meshBounds[0]);
+            PostProcessBottomObject(newGOs[1], _meshBounds[1]);
         }
 
         private void UpdateMeshesInChildren(int i, GameObject go)
@@ -383,11 +386,11 @@ namespace MeshSplitting.Splitables
         {
         }
 
-        protected virtual void PostProcessTopObject(GameObject go)
+        protected virtual void PostProcessTopObject(GameObject go, Bounds meshSize)
         {
         }
 
-        protected virtual void PostProcessBottomObject(GameObject go)
+        protected virtual void PostProcessBottomObject(GameObject go, Bounds meshSize)
         {
         }
     }

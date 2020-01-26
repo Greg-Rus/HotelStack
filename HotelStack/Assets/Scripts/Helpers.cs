@@ -17,4 +17,9 @@ public static class Helpers
             Math.Abs(vector.z) > _tolerance ? 0 : 1
             );
     }
+
+    public static Vector3 Abs(this Vector3 vector)
+    {
+        return new Vector3(Math.Abs(vector.x), Math.Abs(vector.y), Math.Abs(vector.z));
+    }
 }
