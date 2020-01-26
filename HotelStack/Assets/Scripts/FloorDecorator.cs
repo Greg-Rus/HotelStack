@@ -18,10 +18,17 @@ public class FloorDecorator : MonoBehaviour
 
     public void AddRoof(GameObject floor, Vector3 splitNormal, Bounds bounds)
     {
-        var center = bounds.center;
+        var center = FloorSpawner.Instance.FloorOrigin + 
+                     new Vector3(
+                         FloorSpawner.Instance.FloorDimensions.x * 0.5f,
+                         -0.005f,
+                         FloorSpawner.Instance.FloorDimensions.y * 0.5f);
+
         var roofGo = Instantiate(RoofPrefab, center, floor.transform.rotation);
-        roofGo.transform.SetParent(floor.transform, false);
-        roofGo.transform.Translate(Vector3.up * (1f - 0.005f));
-        roofGo.transform.localScale = new Vector3(FloorSpawner.Instance.FloorDimensions.x, 0.01f, FloorSpawner.Instance.FloorDimensions.y);
+        roofGo.transform.SetParent(floor.transform, true);
+        roofGo.transform.localScale = new Vector3(
+            FloorSpawner.Instance.FloorDimensions.x, 
+            0.01f, 
+            FloorSpawner.Instance.FloorDimensions.y);
     }
 }

@@ -113,12 +113,12 @@ public class FloorSpawner : MonoBehaviour
         else if (overhang.z > 0) Splitter.transform.rotation = Quaternion.Euler(new Vector3(-90, 0f, 0f));
         else if (overhang.z < 0) Splitter.transform.rotation = Quaternion.Euler(new Vector3(90, 0f, 0f));
 
-        Splitter.Floor = CurrentFloor.Splitable;
-        Splitter.SplitObject();
-
         if (overhang.x > 0 || overhang.z > 0) FloorOrigin = CurrentFloor.transform.position;
         FloorDimensions.x -= Math.Abs(overhang.x);
         FloorDimensions.y -= Math.Abs(overhang.z);
+
+        Splitter.Floor = CurrentFloor.Splitable;
+        Splitter.SplitObject();
     }
 
     private void SpawnNewFloor()
