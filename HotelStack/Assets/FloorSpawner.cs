@@ -39,6 +39,9 @@ public class FloorSpawner : MonoBehaviour
     {
         CurrentFloor = FloorErector.BuildFloor(FloorDimensions.x, FloorDimensions.y);
         CurrentFloor.transform.position = FloorOrigin + (CurrentDirection * FloorSpawnOffset * -1);
+
+        FloorDecorator.Instance.DecorateAlongWall(CurrentFloor.gameObject);
+
         Destination = FloorOrigin + CurrentDirection * FloorSpawnOffset;
 
         UpdateCameraPosition();
