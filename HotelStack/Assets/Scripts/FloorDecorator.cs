@@ -7,15 +7,7 @@ using UnityEngine;
 [CustomEditor(typeof(FloorDecorator))]
 public class FloorDecoratorEditor : Editor
 {
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
-        var t = (FloorDecorator)target;
-        if (GUILayout.Button("Decorate Floor"))
-        {
-            t.DecorateAlongWall(t.TestFloor);
-        }
-    }
+
 }
 
 public class FloorDecorator : MonoBehaviour
@@ -50,23 +42,78 @@ public class FloorDecorator : MonoBehaviour
             FloorSpawner.Instance.FloorDimensions.y);
     }
 
-    public void DecorateAlongWall(GameObject floor)
+    public void DecorateAlongWall(FurnishedFloor floor)
     {
+        var motionAxis = FloorSpawner.Instance.CurrentDirection;
+        //FurnishAlongX(floor, motionAxis.z > 0);
+        //FurnishAlongY(floor, motionAxis.x > 0);
+        FurnishAlongWall(floor, motionAxis.z > 0, FloorSpawner.Instance.FloorDimensions.x - 1, Vector3.right, 180, Vector3.zero);
+        FurnishAlongWall(floor, motionAxis.z > 0, FloorSpawner.Instance.FloorDimensions.x - 1, Vector3.right, 0, Vector3.forward * FloorSpawner.Instance.FloorDimensions.y);
+        FurnishAlongWall(floor, motionAxis.x > 0, FloorSpawner.Instance.FloorDimensions.y - 1, Vector3.forward, -90, Vector3.zero);
+        FurnishAlongWall(floor, motionAxis.x > 0, FloorSpawner.Instance.FloorDimensions.y - 1, Vector3.forward, 90, Vector3.right * FloorSpawner.Instance.FloorDimensions.x);
+    }
 
-        var lengthX = FloorSpawner.Instance.FloorDimensions.x;
-        if (lengthX < 1) return;
+    //private void FurnishAlongX(FurnishedFloor floor, bool isParallelToMotion)
+    //{
+    //    var lengthX = FloorSpawner.Instance.FloorDimensions.x - 1;
+    //    if (lengthX < 1) return;
+
+    //    var usedBudget = 0;
+
+    //    while (usedBudget < lengthX)
+    //    {
+    //        var legalFurniture = Config.FurnitureEntities.Where(entity => entity.xSize <= lengthX - usedBudget).ToList()
+    //            .Random();
+
+    //        var furniture = Instantiate(legalFurniture.Prefab);
+
+    //        furniture.transform.SetParent(floor.DecorationsParent, false);
+    //        furniture.transform.Translate(new Vector3(legalFurniture.xSize * 0.5f + usedBudget, 0f, 0f));
+    //        furniture.transform.Rotate(Vector3.up, 180);
+
+    //        usedBudget += legalFurniture.xSize;
+    //    }
+    //}
+
+    //private void FurnishAlongY(FurnishedFloor floor, bool isParallelToMotion)
+    //{
+    //    var lengthY = FloorSpawner.Instance.FloorDimensions.y - 1;
+    //    if (lengthY < 1) return;
+
+    //    var usedBudget = 0;
+
+    //    while (usedBudget < lengthY)
+    //    {
+    //        var legalFurniture = Config.FurnitureEntities.Where(entity => entity.xSize <= lengthY - usedBudget).ToList()
+    //            .Random();
+
+    //        var furniture = Instantiate(legalFurniture.Prefab);
+
+    //        furniture.transform.SetParent(floor.DecorationsParent, false);
+    //        furniture.transform.Translate(new Vector3(0f, 0f, legalFurniture.xSize * 0.5f + usedBudget));
+    //        furniture.transform.Rotate(Vector3.up, -90);
+
+    //        usedBudget += legalFurniture.xSize;
+    //    }
+    //}
+
+    private void FurnishAlongWall(FurnishedFloor floor, bool isParallelToMotion, float wallLength, Vector3 translationDirection, 
+        float roation, Vector3 translationOffset)
+    {
+        if (wallLength <= 1) return;
 
         var usedBudget = 0;
 
-        while (usedBudget < lengthX - 1)
+        while (usedBudget < wallLength)
         {
-            var legalFurniture = Config.FurnitureEntities.Where(entity => entity.xSize <= lengthX - usedBudget).ToList().Random();
+            var legalFurniture = Config.FurnitureEntities.Where(entity => entity.xSize <= wallLength - usedBudget).ToList()
+                .Random();
 
             var furniture = Instantiate(legalFurniture.Prefab);
 
-            furniture.transform.SetParent(floor.transform, false);
-            furniture.transform.Translate(new Vector3(legalFurniture.xSize * 0.5f + usedBudget, 0f, 0f));
-            furniture.transform.Rotate(Vector3.up, 180);
+            furniture.transform.SetParent(floor.DecorationsParent, false);
+            furniture.transform.Translate((translationDirection * (legalFurniture.xSize * 0.5f + usedBudget)) + translationOffset);
+            furniture.transform.Rotate(Vector3.up, roation);
 
             usedBudget += legalFurniture.xSize;
         }

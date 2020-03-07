@@ -9,7 +9,7 @@ public class FloorSpawner : MonoBehaviour
     public float StartingSideLength;
     public Vector2 FloorDimensions;
     public float MovementSpeed;
-    public Floor CurrentFloor;
+    public FurnishedFloor CurrentFloor;
     public int HotelHeight = 0;
     public float FloorSpawnOffset;
     public Vector3 FloorOrigin = Vector3.zero;
@@ -40,7 +40,7 @@ public class FloorSpawner : MonoBehaviour
         CurrentFloor = FloorErector.BuildFloor(FloorDimensions.x, FloorDimensions.y);
         CurrentFloor.transform.position = FloorOrigin + (CurrentDirection * FloorSpawnOffset * -1);
 
-        FloorDecorator.Instance.DecorateAlongWall(CurrentFloor.gameObject);
+        FloorDecorator.Instance.DecorateAlongWall(CurrentFloor);
 
         Destination = FloorOrigin + CurrentDirection * FloorSpawnOffset;
 
@@ -120,7 +120,7 @@ public class FloorSpawner : MonoBehaviour
         FloorDimensions.x -= Math.Abs(overhang.x);
         FloorDimensions.y -= Math.Abs(overhang.z);
 
-        Splitter.Floor = CurrentFloor.Splitable;
+        Splitter.Floor = CurrentFloor.Floor.Splitable;
         Splitter.SplitObject();
     }
 

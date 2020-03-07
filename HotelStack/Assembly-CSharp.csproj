@@ -86,6 +86,7 @@
     <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\Splitters\SimpleSplitter.cs" />
     <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\Splitters\Splitter.cs" />
     <Compile Include="Assets\FoxGames Mesh Split\MeshSplitting\Splitters\SplitterSingleCut.cs" />
+    <Compile Include="Assets\FurnishedFloor.cs" />
     <Compile Include="Assets\PackageAssets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\AbstractResizer.cs" />
     <Compile Include="Assets\Scripts\FloorDecorator.cs" />

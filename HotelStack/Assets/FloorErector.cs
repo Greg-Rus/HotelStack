@@ -22,7 +22,7 @@ public class FloorErector : MonoBehaviour
     public Transform SplitTransform;
 
     public List<MeshFilter> Meshes;
-    public Floor FloorPrefab;
+    public FurnishedFloor FurnishedFloorPrefab;
 
     void Awake()
     {
@@ -31,7 +31,7 @@ public class FloorErector : MonoBehaviour
     }
 
 
-    public Floor BuildFloor(float width, float depth)
+    public FurnishedFloor BuildFloor(float width, float depth)
     {
         Meshes.Clear();
 
@@ -60,12 +60,12 @@ public class FloorErector : MonoBehaviour
         return SpawnFloor();
     }
 
-    private Floor SpawnFloor()
+    private FurnishedFloor SpawnFloor()
     {
-        var floor = Instantiate(FloorPrefab, transform.position, transform.rotation);
+        var floor = Instantiate(FurnishedFloorPrefab, transform.position, transform.rotation);
         var combinedMesh = new Mesh();
         combinedMesh.CombineMeshes(CombineMeshes(Meshes));
-        floor.MeshFilter.mesh = combinedMesh;
+        floor.Floor.MeshFilter.mesh = combinedMesh;
 
         return floor;
     }
